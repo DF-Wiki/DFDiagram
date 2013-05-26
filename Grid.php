@@ -22,7 +22,8 @@ class DGrid {
 		return $this->matrix[$r][$c] = $value;
 	}
 }
-$g = new DGrid();
+/*$g = new DGrid();
 $g->set(2,3,'x');
 $g->set(5,7,'y');
 print "a{$g->get(2,3)}b{$g->get(5,6)}c{$g->get(5,7)}d\n";
+*/
