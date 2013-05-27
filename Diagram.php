@@ -38,7 +38,7 @@ class DFDBlockFile{
 	}
 }
 
-class DFDTile{
+class DFDTile {
 
 	public $name;
 	function __construct($text) {
@@ -50,4 +50,10 @@ class DFDTile{
 		preg_match('/<tile name="(.*?)">/', $lines[0], $tag); 
 		$this->name = $tag[1];
 	}
+}
+
+class DFDiagram {
+	/*
+	 * Diagram
+	 */
 }

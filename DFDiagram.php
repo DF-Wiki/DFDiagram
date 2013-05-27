@@ -16,6 +16,16 @@ require_once 'Diagram.php';
 
 $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
+
+$wgExtensionCredits['DFDiagram'][] = array(
+	'path' => __FILE__,
+	'name' => 'DFDiagram',
+	'author' =>'Lethosor',
+	'url' => 'https://github.com/lethosor/DFDiagram',
+	'description' => 'Adds support for DF-style diagrams',
+	'version'  => 0.1,
+);
+
 //DEV
 print($DFDFile->get_block('floor')->name);
 
