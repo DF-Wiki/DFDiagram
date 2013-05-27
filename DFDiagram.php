@@ -16,6 +16,7 @@ require_once 'Diagram.php';
 
 $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
+$wgHooks['ParserFirstCallInit'][] = 'DFDMWHook::init';
 
 $wgExtensionCredits['DFDiagram'][] = array(
 	'path' => __FILE__,
@@ -29,5 +30,6 @@ $wgExtensionCredits['DFDiagram'][] = array(
 //DEV
 print($DFDFile->get_block('floor')->name);
 
+//$wgShowExceptionDetails = true;
 
 print("\n");

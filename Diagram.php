@@ -56,4 +56,43 @@ class DFDiagram {
 	/*
 	 * Diagram
 	 */
+	private $opts;
+	private $text;
+	function __construct($text, $opts) {
+		// Initialize
+		$this->text = $text;
+		$this->opts = $opts;
+	}
+	function render(){
+		$html = 'Not implemented!';
+		$html .= "<br>FG:{$this->opts[fg]}, BG:{$this->opts[bg]}";
+		$html .= "<br>Text:<br> {$this->text}";
+		return $html;
+	}
+}
+
+class DFDMWHook {
+	/*
+	 * Hook into MediaWiki API
+	 */
+	static function init($parser) {
+		// Bind the <diagram> tag to DFDMWHook::create
+		$parser->setHook('diagram', 'DFDMWHook::create');
+		return true;
+	}
+	static function create($text, $args, $parser, $frame) {
+		// Parse options
+		$opts = array(
+			'fg' => '7:1',
+			'bg' => '0:0'
+		);
+		foreach($opts as $key => $val){
+			if(array_key_exists($key, $args)){
+				$opts[$key] = $args[$key];
+			}
+		}
+		// Create new DFDiagram
+		$diagram = new DFDiagram($text, $opts);
+		return $diagram->render();
+	}
 }
