@@ -147,12 +147,15 @@ class DFDMWHook {
 		return true;
 	}
 	static public function create($text, $args, $parser, $frame) {
-		// Parse options
-		// Create new DFDiagram
+		// Emulate HTML-style ignoring of whitespace
 		if(preg_match('/\S/', $text) === 0){ // no match
+			// Include the default diagram
 			global $wgDFDDefaultDiagramPath;
 			$text = file_get_contents($wgDFDDefaultDiagramPath);
 		}
+		// Remove leading newlines
+		$text = preg_replace('/^\n+/', '', $text);
+		// Create new DFDiagram
 		$diagram = new DFDiagram($text, $opts);
 		return $diagram->render();
 	}
