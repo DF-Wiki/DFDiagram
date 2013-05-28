@@ -92,7 +92,7 @@ class DFDTable {
 		}
 	}
 	public function render(){
-		$html = "<table>\n";
+		$html = "\n<table>\n";
 		for($r = 0; $r < $this->grid->height; $r++) {
 			$html .= "\t<tr>";
 			for ($c = 0; $c < $this->grid->width; $c++) {
@@ -149,6 +149,10 @@ class DFDMWHook {
 	static public function create($text, $args, $parser, $frame) {
 		// Parse options
 		// Create new DFDiagram
+		if(preg_match('/\S/', $text) === 0){ // no match
+			global $wgDFDDefaultDiagramPath;
+			$text = file_get_contents($wgDFDDefaultDiagramPath);
+		}
 		$diagram = new DFDiagram($text, $opts);
 		return $diagram->render();
 	}

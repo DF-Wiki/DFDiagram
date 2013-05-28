@@ -3,13 +3,17 @@
  * DFDiagram
  * MediaWiki extension for including Dwarf Fortress diagrams
  */
-define('DFD_DEBUG', 1);
 
-if(DFD_DEBUG){
+// Use on command line
+define('DFD_DEBUG', 0);
+
+if(defined(DFD_DEBUG) && DFD_DEBUG){
 	$wgDFDConfigFile = "diagram_config.txt";
+	$wgDFDDefaultDiagramPath = "default_diagram.txt";
 }
 elseif (!isset($wgDFDConfigFile)) {
 	$wgDFDConfigFile = "$IP/extensions/DFDiagram/diagram_config.txt";
+	$wgDFDDefaultDiagramPath = "$IP/extensions/DFDiagram/default_diagram.txt";
 }
 
 require_once 'Diagram.php';
@@ -41,7 +45,7 @@ $wgExtensionCredits['DFDiagram'][] = array(
 );
 
 //DEV
-print($DFDFile->get_block('floor')->name);
+//print($DFDFile->get_block('floor')->name);
 
 //$wgShowExceptionDetails = true;
 
