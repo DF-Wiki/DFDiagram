@@ -97,7 +97,7 @@ class DFDTable {
 			$html .= "\t<tr>";
 			for ($c = 0; $c < $this->grid->width; $c++) {
 				$char = $this->grid->get($r, $c);
-				if($char == ' ')
+				if($char == ' ' || $char == '')
 					$char = '&nbsp;';
 				$html .= "<td>$char</td>";
 			}
