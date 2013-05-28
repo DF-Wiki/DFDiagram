@@ -52,26 +52,78 @@ class DFDTile {
 	}
 }
 
-class DFDiagram {
+class DFDTable {
 	/**
-	 * Diagram
+	 * Represents the table created by a diagram
 	 */
-	private $opts;
 	private $text;
-	private $fgcolor;
-	private $bgcolor;
-	public function __construct($text, $opts) {
-		// Initialize
+	private $opts;
+	private $fg;
+	private $bg;
+	private $lines;
+	private $grid;
+	public function __construct($text, $a_opts) {
+		// Default options
+		$opts = array(
+			'fg' => '7:1',
+			'bg' => '0:0'
+		);
+		foreach($opts as $key => $val){
+			if(array_key_exists($key, $a_opts)){
+				$opts[$key] = $a_opts[$key];
+			}
+		}
 		$this->text = $text;
 		$this->opts = $opts;
-		$this->fgcolor = $opts[fg];
-		$this->bgcolor = $opts[bg];
+		$this->fg = $opts[fg];
+		$this->bg = $opts[bg];
+		$this->setUp();
+	}
+	public function setUp(){
+		/*
+		 * Set up table
+		 */
+		$this->grid = new DGrid();
+		$this->lines = preg_split('/\n/', $this->text);
+		foreach($this->lines as $row => $line){
+			for($i = 0; $i < strlen($line); $i++) {
+				$this->grid->set($row, $i, $line[$i]);
+			}
+		}
 	}
 	public function render(){
-		$html = 'Not implemented!';
+		$html = "<table>\n";
+		for($r = 0; $r < $this->grid->height; $r++) {
+			$html .= "\t<tr>";
+			for ($c = 0; $c < $this->grid->width; $c++) {
+				$char = $this->grid->get($r, $c);
+				if($char == ' ')
+					$char = '&nbsp;';
+				$html .= "<td>$char</td>";
+			}
+			$html .= "</tr>\n";
+		}
+		$html .= "</table>";
+		return $html;
+	}
+}
+
+class DFDiagram {
+	/**
+	 * @description Diagram wrapper
+	 */
+	private $table;
+	public function __construct($text, $opts) {
+		// Initialize
+		$this->table = new DFDTable($text, $opts);
+	}
+	public function render(){
+		/* $html = 'Not implemented!';
 		$html .= "<br>FG:{$this->fgcolor}, BG:{$this->bgcolor}";
 		$html .= "<br>Text:<br> {$this->text}";
-		return $this->format($html);
+		 * 
+		 */
+		return $this->format($this->table->render());
 	}
 
 	public function format($html) {
@@ -96,15 +148,6 @@ class DFDMWHook {
 	}
 	static public function create($text, $args, $parser, $frame) {
 		// Parse options
-		$opts = array(
-			'fg' => '7:1',
-			'bg' => '0:0'
-		);
-		foreach($opts as $key => $val){
-			if(array_key_exists($key, $args)){
-				$opts[$key] = $args[$key];
-			}
-		}
 		// Create new DFDiagram
 		$diagram = new DFDiagram($text, $opts);
 		return $diagram->render();
@@ -117,3 +160,5 @@ class DFDMWHook {
 		return true;
 	}
 }
+
+$DFDFile = new DFDBlockFile($wgDFDConfigFile);

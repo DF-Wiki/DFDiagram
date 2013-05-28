@@ -5,10 +5,13 @@
 
 class DGrid {
 	private $matrix;
-	function __construct(){
+	private $width;
+	private $height;
+	
+	public function __construct(){
 		$this->matrix = array();
 	}
-	function get($r, $c){
+	public function get($r, $c){
 		while(count($this->matrix) <= $r){
 			$this->matrix[] = array();
 		}
@@ -17,9 +20,15 @@ class DGrid {
 		}
 		return $this->matrix[$r][$c];
 	}
-	function set($r, $c, $value){
+	public function set($r, $c, $value){
+		$this->height = max($this->height, $r+1);
+		$this->width = max($this->width, $c+1);
 		$this->get($r, $c);
 		return $this->matrix[$r][$c] = $value;
+	}
+	public function __get($name) {
+		if($name == 'width') return $this->width;
+		if($name == 'height') return $this->height;
 	}
 }
 /*$g = new DGrid();
