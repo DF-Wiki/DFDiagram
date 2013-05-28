@@ -4,3 +4,7 @@
 # Mac
 .DS_Store
 Icon
+
+# NetBeans
+/nbproject/private/
+/nbproject/*
