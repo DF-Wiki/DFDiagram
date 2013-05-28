@@ -109,4 +109,11 @@ class DFDMWHook {
 		$diagram = new DFDiagram($text, $opts);
 		return $diagram->render();
 	}
+	static public function includeModules($outPage) {
+		/*
+		 * Include the resources in $wgResourceModules
+		 */
+		$outPage->addModuleStyles(array('ext.DFDiagram'));
+		return true;
+	}
 }

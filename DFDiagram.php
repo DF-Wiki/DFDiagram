@@ -16,7 +16,20 @@ require_once 'Diagram.php';
 
 $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
+/*
+ * Add hooks
+ */
+
 $wgHooks['ParserFirstCallInit'][] = 'DFDMWHook::init';
+$wgResourceModules['ext.DFDiagram'] = array(
+	'styles' => 'dfdiagram.css'
+);
+
+$wgHooks['BeforePageDisplay'][] = 'DFDMWHook::includeModules';
+
+/*
+ * Credits for Special:Version
+ */
 
 $wgExtensionCredits['DFDiagram'][] = array(
 	'path' => __FILE__,
