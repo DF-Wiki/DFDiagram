@@ -53,19 +53,23 @@ class DFDTile {
 }
 
 class DFDiagram {
-	/*
+	/**
 	 * Diagram
 	 */
 	private $opts;
 	private $text;
+	private $fgcolor;
+	private $bgcolor;
 	function __construct($text, $opts) {
 		// Initialize
 		$this->text = $text;
 		$this->opts = $opts;
+		$this->fgcolor = $opts[fg];
+		$this->bgcolor = $opts[bg];
 	}
 	function render(){
 		$html = 'Not implemented!';
-		$html .= "<br>FG:{$this->opts[fg]}, BG:{$this->opts[bg]}";
+		$html .= "<br>FG:{$this->fgcolor}, BG:{$this->bgcolor}";
 		$html .= "<br>Text:<br> {$this->text}";
 		return $html;
 	}
