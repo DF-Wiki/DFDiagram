@@ -60,31 +60,41 @@ class DFDiagram {
 	private $text;
 	private $fgcolor;
 	private $bgcolor;
-	function __construct($text, $opts) {
+	public function __construct($text, $opts) {
 		// Initialize
 		$this->text = $text;
 		$this->opts = $opts;
 		$this->fgcolor = $opts[fg];
 		$this->bgcolor = $opts[bg];
 	}
-	function render(){
+	public function render(){
 		$html = 'Not implemented!';
 		$html .= "<br>FG:{$this->fgcolor}, BG:{$this->bgcolor}";
 		$html .= "<br>Text:<br> {$this->text}";
-		return $html;
+		return $this->format($html);
 	}
+
+	public function format($html) {
+		return <<< HTML
+<div class="dfdiagram">
+$html
+</div>
+HTML;
+	}
+	
+	
 }
 
 class DFDMWHook {
 	/*
 	 * Hook into MediaWiki API
 	 */
-	static function init($parser) {
+	static public function init($parser) {
 		// Bind the <diagram> tag to DFDMWHook::create
 		$parser->setHook('diagram', 'DFDMWHook::create');
 		return true;
 	}
-	static function create($text, $args, $parser, $frame) {
+	static public function create($text, $args, $parser, $frame) {
 		// Parse options
 		$opts = array(
 			'fg' => '7:1',
