@@ -3,6 +3,7 @@
  * Diagram
  */
 
+require_once 'Color.php';
 require_once 'Grid.php';
 
 class DFDBlockFile{
@@ -75,19 +76,24 @@ class DFDTable {
 		}
 		$this->text = $text;
 		$this->opts = $opts;
-		$this->fg = $opts[fg];
-		$this->bg = $opts[bg];
+		$this->fg = $opts['fg'];
+		$this->bg = $opts['bg'];
 		$this->setUp();
 	}
 	public function setUp(){
 		/*
 		 * Set up table
 		 */
+		
+		$fgcolor = $this->fg;
+		$bgcolor = $this->bg;
+		
 		$this->grid = new DGrid();
 		$this->lines = preg_split('/\n/', $this->text);
 		foreach($this->lines as $row => $line){
 			for($i = 0; $i < strlen($line); $i++) {
-				$this->grid->set($row, $i, $line[$i]);
+				$cell = new DFDTableCell($line[$i], $fgcolor, $bgcolor);
+				$this->grid->set($row, $i, $cell);
 			}
 		}
 	}
@@ -96,15 +102,38 @@ class DFDTable {
 		for($r = 0; $r < $this->grid->height; $r++) {
 			$html .= "\t<tr>";
 			for ($c = 0; $c < $this->grid->width; $c++) {
-				$char = $this->grid->get($r, $c);
-				if($char == ' ' || $char == '')
-					$char = '&nbsp;';
-				$html .= "<td>$char</td>";
+				$cell = $this->grid->get($r, $c);
+				if($cell === false){
+					// No cell exists at this row/col; create a blank black cell
+					$cell = new DFDTableCell(' ', '0:0', '0:0');
+				}
+				$html .= "<td>{$cell->render()}</td>";
 			}
 			$html .= "</tr>\n";
 		}
 		$html .= "</table>";
 		return $html;
+	}
+}
+
+class DFDTableCell {
+	/*
+	 * An individual cell in a table
+	 */
+	public $text;
+	public $fg;
+	public $bg;
+	public function __construct($text, $fg, $bg) {
+		$this->text = $text;
+		$this->fg = new Color($fg);
+		$this->bg = new Color($bg);
+	}
+	public function render(){
+		$char = $this->text;
+		if($char == ' '){
+			$char = '&nbsp;';
+		}
+		return "<span style=\"display:block; color:{$this->fg}; background-color:{$this->bg};\">{$char}</span>";
 	}
 }
 
@@ -147,7 +176,7 @@ class DFDMWHook {
 		return true;
 	}
 	static public function create($text, $args, $parser, $frame) {
-		// Emulate HTML-style ignoring of whitespace
+		// HTML-style ignoring of whitespace
 		if(preg_match('/\S/', $text) === 0){ // no match
 			// Include the default diagram
 			global $wgDFDDefaultDiagramPath;
@@ -156,7 +185,7 @@ class DFDMWHook {
 		// Remove leading newlines
 		$text = preg_replace('/^\n+/', '', $text);
 		// Create new DFDiagram
-		$diagram = new DFDiagram($text, $opts);
+		$diagram = new DFDiagram($text, $args);
 		return $diagram->render();
 	}
 	static public function includeModules($outPage) {

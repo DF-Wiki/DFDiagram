@@ -3,7 +3,7 @@
  * DFDiagram
  * MediaWiki extension for including Dwarf Fortress diagrams
  */
-
+$wgShowExceptionDetails = true;
 // Use on command line
 define('DFD_DEBUG', 0);
 

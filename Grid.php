@@ -16,7 +16,7 @@ class DGrid {
 			$this->matrix[] = array();
 		}
 		while (count($this->matrix[$r]) <= $c) {
-			$this->matrix[$r][] = '';
+			$this->matrix[$r][] = false;
 		}
 		return $this->matrix[$r][$c];
 	}
