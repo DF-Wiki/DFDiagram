@@ -134,12 +134,6 @@ class DFDTable {
 			$this->tokens[$row] = DFDParseTokens($this->lines[$row]);
 		}
 		
-		/* foreach($this->lines as $row => $line){
-			for($i = 0; $i < strlen($line); $i++) {
-				$cell = new DFDTableCell($line[$i], $fgcolor, $bgcolor);
-				$this->grid->set($row, $i, $cell);
-			}
-		} */
 		
 		for ($row = 0; $row < count($this->tokens); $row++) {
 			$tokens = $this->tokens[$row];
