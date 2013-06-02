@@ -6,6 +6,43 @@
 require_once 'Color.php';
 require_once 'Grid.php';
 
+function DFDParseTokens($string){
+	/*
+	 * Takes a string and returns an array of tokens (e.g. Color tags, tiles, etc.)
+	 */
+	
+	// True when inside a tag ([...])
+	$in_tag = false;
+	// Index where current tag begins
+	$tag_start = 0;
+	
+	$tokens = array();
+	
+	for ($index = 0; $index < strlen($string); $index++) {
+		$char = $string[$index];
+		if ($char == "[") {
+			// starts a tag
+			$in_tag = true;
+			$tag_start = $index;
+		}
+		elseif ($char == "]") {
+			// closes a tag
+			$in_tag = false;
+			// Use the substring from $tag_start to the current character (INCLUSIVE) as the token
+			$tokens[] = substr($string, $tag_start, $index - $tag_start + 1);
+		}
+		if($in_tag || $char == ']'){
+			// Don't count tags as individual characters!
+			continue;
+		}
+		//if (!$in_tag && $char != "]") {
+			// Not in a tag, so current character is an individual token
+		$tokens[] = $char;
+		//}
+	}
+	return $tokens;
+}
+
 class DFDBlockFile{
 
 	private $text;
@@ -90,11 +127,56 @@ class DFDTable {
 		
 		$this->grid = new DGrid();
 		$this->lines = preg_split('/\n/', $this->text);
-		foreach($this->lines as $row => $line){
+		
+		// Parse tokens
+		$this->tokens = array();
+		for ($row = 0; $row < count($this->lines); $row++) {
+			$this->tokens[$row] = DFDParseTokens($this->lines[$row]);
+		}
+		
+		/* foreach($this->lines as $row => $line){
 			for($i = 0; $i < strlen($line); $i++) {
 				$cell = new DFDTableCell($line[$i], $fgcolor, $bgcolor);
 				$this->grid->set($row, $i, $cell);
 			}
+		} */
+		
+		for ($row = 0; $row < count($this->tokens); $row++) {
+			$tokens = $this->tokens[$row];
+			$col = -1;
+			for ($i = 0; $i < count($tokens); $i++) {
+				$token = $tokens[$i];
+				if(strlen($token) == 1){
+					// Character
+					$col++;
+					$cell = new DFDTableCell($token, $fgcolor, $bgcolor);
+					$this->grid->set($row, $col, $cell);
+				}
+				else {
+					// tag
+					if ($token == '[#]') {
+						// Reset foreground color
+						$fgcolor = $this->fg;
+					}
+					elseif ($token == '[@]') {
+						// Reset bg color
+						$bgcolor = $this->bg;
+					}
+					elseif ($token == '[#@]' || $token == '[@#]') {
+						// Reset fg and bg
+						$bgcolor = $this->bg;
+						$fgcolor = $this->fg;
+					}
+					elseif ($token[1] == '#') {
+						// Set fg color
+						$fgcolor = substr($token, 2, strlen($token) - 3);
+					}
+					elseif ($token[1] == '@') {
+						// Set bg color
+						$bgcolor = substr($token, 2, strlen($token) - 3);
+					}
+				}
+			}			
 		}
 	}
 	public function render(){
