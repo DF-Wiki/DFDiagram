@@ -5,6 +5,7 @@
 
 require_once 'Color.php';
 require_once 'Grid.php';
+require_once 'VarDict.php';
 
 function DFDParseTokens($string){
 	/*
@@ -100,7 +101,10 @@ class DFDTable {
 	private $bg;
 	private $lines;
 	private $grid;
+	private $vars;
 	public function __construct($text, $a_opts) {
+		// Opt-independent stuff
+		$this->vars = new VarDict();
 		// Default options
 		$opts = array(
 			'fg' => '7:1',
@@ -124,16 +128,47 @@ class DFDTable {
 		
 		$fgcolor = $this->fg;
 		$bgcolor = $this->bg;
+				
+		// Parse variables first - otherwise, characters won't be displayed properly
 		
+		$var_tags = array();
+		preg_match_all('/\[\$[^]]+\]/', $this->text, $var_tags);
+		if (count($var_tags) && $var_tags[0] != null) {
+			foreach ($var_tags[0] as $i => $tag) {
+				// preg escaped
+				$esc_tag = '\[\$' . substr($tag, 2, -1) . '\]';
+				if (preg_match('/=/', $tag)) {
+					// Assignment
+					$parts = preg_split('/=/', $tag, 2);
+					$vname = substr($parts[0], 2);
+					$val = substr($parts[1], 0, -1);
+					$this->vars->set($vname, $val);
+					$this->text = preg_replace('/' . $esc_tag . '/', '', $this->text);
+				}
+				else {
+					// variable name
+					$vname = substr($tag, 2, -1);
+					// Replace 1 occurence of the tag (therefore the first occurence) with the variable's value
+					$this->text = preg_replace('/\[\$' . $vname . '\]/', $this->vars->get($vname), $this->text, 1);
+				}
+			}
+		}
+		
+		// Clean up blank lines
+		$this->text = preg_replace('/\n+/', "\n", $this->text);
+		// And possible lines at the beginning
+		$this->text = preg_replace('/^\n+/', '', $this->text);
+		
+		// Set up grid
 		$this->grid = new DGrid();
 		$this->lines = preg_split('/\n/', $this->text);
-		
+
 		// Parse tokens
 		$this->tokens = array();
 		for ($row = 0; $row < count($this->lines); $row++) {
 			$this->tokens[$row] = DFDParseTokens($this->lines[$row]);
 		}
-		
+		 
 		
 		for ($row = 0; $row < count($this->tokens); $row++) {
 			$tokens = $this->tokens[$row];
