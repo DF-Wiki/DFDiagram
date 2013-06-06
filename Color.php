@@ -151,7 +151,7 @@ class Color {
 		}
 		// Search for color in $DFCOLORS
 		foreach ($DFCOLORS as $color => $value) {
-			if ($color == $name) {
+			if ($color == preg_replace('/[_\s]/', '-', $name)) {
 				$this->name = $value;
 				break;
 			}
