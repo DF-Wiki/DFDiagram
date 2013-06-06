@@ -1,6 +1,9 @@
 # Autosave
 *~
 
+# Stuff
+/.ignore/*
+
 # Mac
 .DS_Store
 Icon
