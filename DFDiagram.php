@@ -41,7 +41,7 @@ $wgExtensionCredits['DFDiagram'][] = array(
 	'author' =>'Lethosor',
 	'url' => 'https://github.com/lethosor/DFDiagram',
 	'description' => 'Adds support for DF-style diagrams',
-	'version'  => '0.3',
+	'version'  => '0.3.1',
 );
 
 //DEV
