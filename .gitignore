@@ -11,3 +11,8 @@ Icon
 # NetBeans
 /nbproject/private/
 /nbproject/*
+
+#Eclipse
+.project
+/.settings/
+.buildpath
