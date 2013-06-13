@@ -3,6 +3,7 @@
  * Diagram
  */
 
+require_once 'Char.php';
 require_once 'Color.php';
 require_once 'Grid.php';
 require_once 'VarDict.php';
@@ -203,6 +204,13 @@ class DFDTable {
 					elseif ($token[1] == '@') {
 						// Set bg color
 						$bgcolor = substr($token, 2, strlen($token) - 3);
+					}
+					elseif ($token[1] == '%') {
+						// Character
+						$char = new Char(substr($token, 2, strlen($token) - 3));
+						$cell = new DFDTableCell($char->text, $fgcolor, $bgcolor);
+						$this->grid->set($row, $col, $cell);
+						$col++;
 					}
 				}
 			}			
