@@ -207,10 +207,10 @@ class DFDTable {
 					}
 					elseif ($token[1] == '%') {
 						// Character
+						$col++;
 						$char = new Char(substr($token, 2, strlen($token) - 3));
 						$cell = new DFDTableCell($char->text, $fgcolor, $bgcolor);
 						$this->grid->set($row, $col, $cell);
-						$col++;
 					}
 				}
 			}			
