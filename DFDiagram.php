@@ -49,4 +49,4 @@ $wgExtensionCredits['DFDiagram'][] = array(
 
 //$wgShowExceptionDetails = true;
 
-print("\n");
+
