@@ -2,6 +2,8 @@
 /*
  * DFDiagram
  * MediaWiki extension for including Dwarf Fortress diagrams
+ *
+ * This is the file that should be included by LocalSettings.php
  */
 $wgShowExceptionDetails = true;
 // Use on command line

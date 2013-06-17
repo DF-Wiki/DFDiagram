@@ -1,6 +1,5 @@
 <?php
 
-
 // Standard DF colors
 $DFCOLORS = array(
 	'0:0' => '#000000',

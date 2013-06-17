@@ -1,6 +1,9 @@
 <?php
 /*
  * Diagram
+ *
+ * NOTE: DO NOT INCLUDE THIS DIRECTLY VIA LocalSettings.php. This is NOT the main extension
+ * file. Include DFDiagram.php instead.
  */
 
 require_once 'Char.php';
@@ -45,8 +48,7 @@ function DFDParseTokens($string){
 	return $tokens;
 }
 
-class DFDBlockFile{
-
+class DFDBlockFile {
 	private $text;
 	private $blocks;
 	function __construct($path) {
@@ -213,7 +215,7 @@ class DFDTable {
 						$this->grid->set($row, $col, $cell);
 					}
 				}
-			}			
+			}           
 		}
 	}
 	public function render(){
@@ -295,7 +297,7 @@ HTML;
 
 class DFDMWHook {
 	/*
-	 * Hook into MediaWiki API
+	 * Hooks for MediaWiki API
 	 */
 	static public function init($parser) {
 		// Bind the <diagram> tag to DFDMWHook::create
