@@ -220,11 +220,19 @@ class DFDTable {
 		$html = "\n<table>\n";
 		for($r = 0; $r < $this->grid->height; $r++) {
 			$html .= "\t<tr>";
+			// Initial bg/fg colors
+			$fg = $this->fg;
+			$bg = $this->bg;
 			for ($c = 0; $c < $this->grid->width; $c++) {
 				$cell = $this->grid->get($r, $c);
 				if($cell === false){
 					// No cell exists at this row/col; create a blank black cell
-					$cell = new DFDTableCell(' ', '0:0', '0:0');
+					$cell = new DFDTableCell(' ', "$fg", "$bg");
+				}
+				else {
+					// Set fg/bg to current cell's colors
+					$fg = $cell->fg;
+					$bg = $cell->bg;
 				}
 				$html .= "<td>{$cell->render()}</td>";
 			}
