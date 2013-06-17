@@ -140,7 +140,7 @@ class Color {
 	public function __construct($name) {
 		$this->name = $name;
 		global $DFCOLORS;
-		if (preg_match('/^([0-9a-fA-F]{3}){1,2}$/', $this->name)) {
+		if (preg_match('/^([0-9a-fA-F]{3}){1,2}$/', $this->name)) { 
 			// Prepend a # to hexadecimal colors
 			$this->name = '#' . $this->name;
 		}

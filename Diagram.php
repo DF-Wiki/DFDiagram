@@ -215,7 +215,7 @@ class DFDTable {
 						$this->grid->set($row, $col, $cell);
 					}
 				}
-			}           
+			}
 		}
 	}
 	public function render(){
