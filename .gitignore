@@ -16,3 +16,6 @@ Icon
 .project
 /.settings/
 .buildpath
+
+# Komodo
+*.komodoproject
