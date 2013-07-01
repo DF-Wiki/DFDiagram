@@ -1,7 +1,7 @@
  <?php
 
 class DGrid {
-	/*
+	/**
 	 * Grid
 	 *
 	 * Sort of like a 2D array, but simplified for the purposes of this extension
