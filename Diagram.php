@@ -244,8 +244,12 @@ class DFDTable {
 }
 
 class DFDTableCell {
-	/*
-	 * An individual cell in a table
+	/**
+	 * An individual cell in a DFDTable
+	 *
+	 * @property Color $fg The cell's foreground color
+	 * @property Color $bg The cell's background color
+	 * @property string $text The cell's text (should be one character, but this is not enforced)
 	 */
 	public $text;
 	public $fg;
@@ -257,6 +261,7 @@ class DFDTableCell {
 	}
 	public function render(){
 		$char = $this->text;
+		// &nbsp; is a non-breaking space; without it, the cell doesn't align with other cells properly.
 		if($char == ' '){
 			$char = '&nbsp;';
 		}
@@ -266,19 +271,19 @@ class DFDTableCell {
 
 class DFDiagram {
 	/**
-	 * @description Diagram wrapper
+	 * Diagram wrapper
+	 *
+	 * Note that this class uses DFDTable to render the body of the diagram.
 	 */
+	
+	// A DFDTable
 	private $table;
 	public function __construct($text, $opts) {
-		// Initialize
+		// Initialize the table with the provided text and options (no processing here)
 		$this->table = new DFDTable($text, $opts);
 	}
 	public function render(){
-		/* $html = 'Not implemented!';
-		$html .= "<br>FG:{$this->fgcolor}, BG:{$this->bgcolor}";
-		$html .= "<br>Text:<br> {$this->text}";
-		 * 
-		 */
+		// Render the rendered table, wrapped with render()
 		return $this->format($this->table->render());
 	}
 
@@ -293,13 +298,13 @@ HTML;
 	
 }
 
-class DFDMWHook {
-	/*
-	 * Hook into MediaWiki API
+class DFDMWHooks {
+	/**
+	 * Hooks for integrating DFDiagram extension functionality with MediaWiki
 	 */
 	static public function init($parser) {
-		// Bind the <diagram> tag to DFDMWHook::create
-		$parser->setHook('diagram', 'DFDMWHook::create');
+		// Register the <diagram> tag
+		$parser->setHook('diagram', 'DFDMWHooks::create');
 		return true;
 	}
 	static public function create($text, $args, $parser, $frame) {
