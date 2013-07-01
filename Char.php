@@ -267,6 +267,8 @@ class Char {
 	 */
 	public function __construct($id) {
 		global $DFCharacters;
+		// Remove leading zeros
+		$id = preg_replace('/^0+/', '', $id);
 		$char = $DFCharacters[$id];
 		$this->text = json_decode('"'.$char.'"');
 	}
