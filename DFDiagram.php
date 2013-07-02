@@ -38,9 +38,3 @@ $wgExtensionCredits['DFDiagram'][] = array(
 	'version'  => '0.4',
 );
 
-//DEV
-//print($DFDFile->get_block('floor')->name);
-
-//$wgShowExceptionDetails = true;
-
-
