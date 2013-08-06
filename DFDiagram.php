@@ -22,7 +22,10 @@ $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
 $wgHooks['ParserFirstCallInit'][] = 'DFDMWHooks::init';
 $wgResourceModules['ext.DFDiagram'] = array(
-	'styles' => "extensions/DFDiagram/dfdiagram.css"
+	'styles' => "modules/ext.DFDiagram.css",
+	'scripts' => 'modules/ext.DFDiagram.canvas.js',
+	'localBasePath' => __DIR__,
+	'remoteExtPath' => 'DFDiagram'
 );
 
 $wgHooks['BeforePageDisplay'][] = 'DFDMWHooks::includeModules';

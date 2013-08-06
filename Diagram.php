@@ -326,7 +326,7 @@ class DFDMWHooks {
 		/*
 		 * Include the resources in $wgResourceModules
 		 */
-		$outPage->addModuleStyles(array('ext.DFDiagram'));
+		$outPage->addModules(array('ext.DFDiagram'));
 		return true;
 	}
 }
