@@ -18,3 +18,7 @@ Make sure the DFDiagram folder is located in your (MediaWiki)/extensions folder 
 require_once( "$IP/extensions/DFDiagram/DFDiagram.php" );
 ```
 Navigate to `Special:Version` on your wiki to verify that the extension has been installed.
+
+Usage
+---
+See the [wiki](https://github.com/lethosor/DFDiagram/wiki) for instructions on how to use this extension.

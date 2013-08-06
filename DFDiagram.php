@@ -5,16 +5,10 @@
  *
  * This is the file that should be included by LocalSettings.php
  */
-$wgShowExceptionDetails = true;
-// Use on command line
-define('DFD_DEBUG', 0);
-
-if(defined(DFD_DEBUG) && DFD_DEBUG){
-	$wgDFDConfigFile = "diagram_config.txt";
-	$wgDFDDefaultDiagramPath = "default_diagram.txt";
-}
-elseif (!isset($wgDFDConfigFile)) {
+if (!isset($wgDFDConfigFile)) {
 	$wgDFDConfigFile = "$IP/extensions/DFDiagram/diagram_config.txt";
+}
+if (!isset($wgDFDDefaultDiagramPath)) {
 	$wgDFDDefaultDiagramPath = "$IP/extensions/DFDiagram/default_diagram.txt";
 }
 
@@ -26,12 +20,12 @@ $DFDFile = new DFDBlockFile($wgDFDConfigFile);
  * Add hooks
  */
 
-$wgHooks['ParserFirstCallInit'][] = 'DFDMWHook::init';
+$wgHooks['ParserFirstCallInit'][] = 'DFDMWHooks::init';
 $wgResourceModules['ext.DFDiagram'] = array(
 	'styles' => "extensions/DFDiagram/dfdiagram.css"
 );
 
-$wgHooks['BeforePageDisplay'][] = 'DFDMWHook::includeModules';
+$wgHooks['BeforePageDisplay'][] = 'DFDMWHooks::includeModules';
 
 /*
  * Credits for Special:Version
@@ -45,10 +39,4 @@ $wgExtensionCredits['DFDiagram'][] = array(
 	'description' => 'Adds support for DF-style diagrams',
 	'version'  => '0.4',
 );
-
-//DEV
-//print($DFDFile->get_block('floor')->name);
-
-//$wgShowExceptionDetails = true;
-
 
