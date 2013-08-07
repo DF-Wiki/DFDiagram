@@ -1,5 +1,5 @@
 $(function(){
-	var dfd = {};
+	var dfd = {}, dfd_globals = {font_path: wgScriptPath+'/images/0/02/Curses_640x300.png'};
 	
 	var Cache = dfd.Cache = function() {
 		var _cache = {};
@@ -16,7 +16,7 @@ $(function(){
 
 	
 	var Character = dfd.Character = function(font, ch, fg, bg){
-		
+		var self = {};
 	};
 	
 	
@@ -39,8 +39,11 @@ $(function(){
 	var Font = dfd.Font = function(image_url){
 		var self = {};
 		
-		self.font_canvas = FontCanvas(self, image_url)
-		self.cache = Cache()
+		self.font_canvas = FontCanvas(self, image_url);
+		self.char_width = self.font_canvas.bmp[0].width / 16;
+		self.char_height = self.font_canvas.bmp[0].height / 16;
+		
+		self.cache = Cache();
 		
 		self.get_char = function(ch, fg, bg){
 			if (!fg) fg = 'rgb(255,255,255)';
@@ -61,14 +64,42 @@ $(function(){
 	var Diagram = dfd.Diagram = function(opts){
 		var self = {};
 		opts = $.extend({
-			'font': ''
-		}, opts)
+			'font': dfd_globals.font_path,
+		}, opts);
 		
-		self.init = function(){
-			self.canvas = $('<canvas>')
-		};
+		if (!('div' in opts)) {
+			// div is required!
+			return self;
+		}
 		
+		self.font = Font(opts.font);
+		self.div = $(opts.div);
+		
+		self.canvas = $('<canvas>');
+		self.rows = self.div.find('tr').length;
+		self.cols = self.div.find('tr:nth(0) td').length;
+		self.width = self.cols * self.font.char_width;
+		self.height = self.rows * self.font.char_height;
+		
+		self.canvas.height = self.height;
+		self.canvas.width = self.width;
+
 		return self;
 	};
+	
+	function init_diagrams() {
+		window.diagrams = [];
+		$('.dfdiagram').each(function(i, e){
+			e = $(e);
+			var w = $('<div class="dfdiagram-wrapper">').insertAfter(e);
+			e.appendTo(w).hide();
+			var d = Diagram({'div': e});
+			diagrams.push(d);
+			d.canvas.appendTo(w);
+		});
+	}
+	
+	$(init_diagrams);
+	
 	window.dfd = dfd;
 });
