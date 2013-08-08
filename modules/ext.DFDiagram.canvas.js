@@ -7,36 +7,50 @@ $(function(){
 		self.get = function(k) {
 			return _cache[k];
 		};
-		self.set = function(k, v){
+		self.keys = function() {
+			var keys = [];
+			for (var k in _cache) {
+				keys.push(k);
+			}
+			return keys;
+		};
+		self.set = function(k, v) {
 			_cache[k] = v; return v;
 		};
-		
+		self.clear = function() {
+			_cache = {};
+		};
+		if (this instanceof Cache) $.extend(this, self);
 		return self;
 	};
 
 	
-	var Character = dfd.Character = function(font, ch, fg, bg){
+	var Character = dfd.Character = function(font, ch, fg, bg) {
 		var self = {};
+		
+		if (this instanceof Character) $.extend(this, self);
+		return self;
 	};
 	
 	
-	var FontCanvas = dfd.FontCanvas = function(font, image_url){
+	var FontCanvas = dfd.FontCanvas = function(font, image_url) {
 		var self = {};
 		
 		// Load font image - bmp = bitmap, but other formats are perfectly fine
 		var bmp = self.bmp = $('<img>').attr('src', image_url);
 		var bmp_canvas = self.bmp_canvas = $('<canvas>');
-		bmp.ready(function(){
+		bmp.ready(function() {
 			var cv = bmp_canvas[0];
 			cv.width = bmp[0].width;
 			cv.height = bmp[0].height;
 			cv.getContext('2d').drawImage(bmp[0], 0, 0);
 		});
 		
+		if (this instanceof FontCanvas) $.extend(this, self);
 		return self;
 	};
 	
-	var Font = dfd.Font = function(image_url){
+	var Font = dfd.Font = function(image_url) {
 		var self = {};
 		
 		self.font_canvas = FontCanvas(self, image_url);
@@ -45,7 +59,7 @@ $(function(){
 		
 		self.cache = Cache();
 		
-		self.get_char = function(ch, fg, bg){
+		self.get_char = function(ch, fg, bg) {
 			if (!fg) fg = 'rgb(255,255,255)';
 			if (!bg) bg = 'rgb(0,0,0)';
 			// Convert to rgb
@@ -58,10 +72,11 @@ $(function(){
 			
 		};
 		
+		if (this instanceof Font) $.extend(this, self);
 		return self;
 	};
 	
-	var Diagram = dfd.Diagram = function(opts){
+	var Diagram = dfd.Diagram = function(opts) {
 		var self = {};
 		opts = $.extend({
 			'font': dfd_globals.font_path,
@@ -83,13 +98,14 @@ $(function(){
 		
 		self.canvas.height = self.height;
 		self.canvas.width = self.width;
-
+		
+		if (this instanceof Diagram) $.extend(this, self);
 		return self;
 	};
 	
 	function init_diagrams() {
 		window.diagrams = [];
-		$('.dfdiagram').each(function(i, e){
+		$('.dfdiagram').each(function(i, e) {
 			e = $(e);
 			var w = $('<div class="dfdiagram-wrapper">').insertAfter(e);
 			e.appendTo(w).hide();
