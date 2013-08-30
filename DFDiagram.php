@@ -23,7 +23,10 @@ $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 $wgHooks['ParserFirstCallInit'][] = 'DFDMWHooks::init';
 $wgResourceModules['ext.DFDiagram'] = array(
 	'styles' => "modules/ext.DFDiagram.css",
-	'scripts' => 'modules/ext.DFDiagram.canvas.js',
+	'scripts' => array(
+		'modules/ext.DFDiagram.js',
+		'modules/df-tileset/df-tileset.js',
+	),
 	'localBasePath' => __DIR__,
 	'remoteExtPath' => 'DFDiagram'
 );
