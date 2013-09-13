@@ -10,12 +10,13 @@ require_once 'Char.php';
 require_once 'Color.php';
 require_once 'Grid.php';
 require_once 'VarDict.php';
-
 function DFDParseTokens($string){
 	/*
 	 * Takes a string and returns an array of tokens (e.g. Color tags, tiles, etc.)
 	 */
-	
+	// Convert to UTF-8
+	$string = mb_convert_encoding($string, 'UTF-8');
+
 	// True when inside a tag ([...])
 	$in_tag = false;
 	// Index where current tag begins
@@ -24,7 +25,11 @@ function DFDParseTokens($string){
 	$tokens = array();
 	
 	for ($index = 0; $index < strlen($string); $index++) {
-		$char = $string[$index];
+		$char = mb_substr($string, $index, 1, 'UTF-8');
+		if (!mb_strlen($char)) {
+			// mb_ functions sometimes end up with empty characters
+			continue;
+		}
 		if ($char == "[") {
 			// starts a tag
 			$in_tag = true;
@@ -36,7 +41,8 @@ function DFDParseTokens($string){
 			// Use the substring from $tag_start to the current character (INCLUSIVE) as the token
 			$tokens[] = substr($string, $tag_start, $index - $tag_start + 1);
 		}
-		if($in_tag || $char == ']'){
+		//$tokens[] = $char;
+		if ($in_tag || $char == ']') {
 			// Don't count tags as individual characters!
 			continue;
 		}
@@ -178,13 +184,14 @@ class DFDTable {
 			$col = -1;
 			for ($i = 0; $i < count($tokens); $i++) {
 				$token = $tokens[$i];
-				if(strlen($token) == 1){
+				if(mb_strlen($token) == 1){
 					// Character
 					$col++;
 					$cell = new DFDTableCell($token, $fgcolor, $bgcolor);
 					$this->grid->set($row, $col, $cell);
 				}
 				else {
+					//print('tag');
 					// tag
 					if ($token == '[#]') {
 						// Reset foreground color
