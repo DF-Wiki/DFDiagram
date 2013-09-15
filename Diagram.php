@@ -39,7 +39,7 @@ function DFDParseTokens($string){
 			// closes a tag
 			$in_tag = false;
 			// Use the substring from $tag_start to the current character (INCLUSIVE) as the token
-			$tokens[] = substr($string, $tag_start, $index - $tag_start + 1);
+			$tokens[] = mb_substr($string, $tag_start, $index - $tag_start + 1);
 		}
 		//$tokens[] = $char;
 		if ($in_tag || $char == ']') {
