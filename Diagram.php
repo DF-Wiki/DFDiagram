@@ -41,15 +41,11 @@ function DFDParseTokens($string){
 			// Use the substring from $tag_start to the current character (INCLUSIVE) as the token
 			$tokens[] = mb_substr($string, $tag_start, $index - $tag_start + 1);
 		}
-		//$tokens[] = $char;
 		if ($in_tag || $char == ']') {
 			// Don't count tags as individual characters!
 			continue;
 		}
-		//if (!$in_tag && $char != "]") {
-			// Not in a tag, so current character is an individual token
 		$tokens[] = $char;
-		//}
 	}
 	return $tokens;
 }
@@ -191,7 +187,6 @@ class DFDTable {
 					$this->grid->set($row, $col, $cell);
 				}
 				else {
-					//print('tag');
 					// tag
 					if ($token == '[#]') {
 						// Reset foreground color
