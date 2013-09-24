@@ -284,11 +284,21 @@ class DFDiagram {
 	private $table;
 	public function __construct($text, $opts) {
 		// Initialize the table with the provided text and options (no processing here)
-		$this->table = new DFDTable($text, $opts);
+		//$this->table = new DFDTable($text, $opts);
+		$this->tables = array();
+		$frames = preg_split('/\n*<frame>\n*/', $text);
+		foreach ($frames as $f) {
+			$this->tables[] = new DFDTable($f, $opts);
+		}
 	}
 	public function render(){
 		// Render the rendered table, wrapped with render()
-		return $this->format($this->table->render());
+		//return $this->format($this->table->render());
+		$text = '';
+		foreach ($this->tables as $table) {
+			$text .= '<div class="dfdiagram-frame">' . $table->render() . '</div>';
+		}
+		return $this->format($text);
 	}
 
 	public function format($html) {
