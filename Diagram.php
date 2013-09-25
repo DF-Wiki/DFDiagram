@@ -282,21 +282,68 @@ class DFDiagram {
 	
 	// A DFDTable
 	private $table;
+	public static function parseXMLAttrs($string) {
+		$attrString = preg_replace('/<\w+\s*([^>]*)>/', "$1", $string);
+		$attrString = preg_replace('/(\w+?)=(\w+?)\s+/', "$1=\"$2\" ", $attrString);
+		$attrString = str_replace("'", '"', $attrString);
+		$attrs = array();
+		$current = "";
+		$state = 'name';
+		$attrName = '';
+		for ($i = 0; $i < mb_strlen($string); $i++) {
+			$char = mb_substr($attrString, $i, 1);
+			if ($char == '"') {
+				if ($state == 'name') {
+					$state = 'value';
+					$attrName = $current;
+				}
+				elseif ($state == 'value') {
+					$state = 'name';
+					$attrs[$attrName] = $current;
+				}
+				$current = '';
+				continue;
+			}
+			if (preg_match('/\s/', $char) && $state == 'name') {
+				continue;
+			}
+			if ($char == '=' && $state == 'name') {
+				continue;
+			}
+			$current .= $char;
+		}
+		return $attrs;
+	}
+	public static function XMLAttrsToDataAttrs($attrs) {
+		$text = '';
+		foreach ($attrs as $name => $value) {
+			$text .= "data-$name=\"$value\" ";
+		}
+		return $text;
+	}
 	public function __construct($text, $opts) {
 		// Initialize the table with the provided text and options (no processing here)
 		//$this->table = new DFDTable($text, $opts);
 		$this->tables = array();
-		$frames = preg_split('/\n*<frame>\n*/', $text);
+		$frames = array();
+		if (!preg_match_all('/\n*<(frame[^>]*)>([\s\S]*?)<\/frame>\n*/', $text, $frames, PREG_SET_ORDER)) {
+			// no frames explicitly specified; fall back to a single frame
+			$frames[0] = array("<frame>$text</frame>", 'frame', $text); // simulates a regex match
+		}
 		foreach ($frames as $f) {
-			$this->tables[] = new DFDTable($f, $opts);
+			$frameText = $f[2];
+			$table = new DFDTable($frameText, $opts);
+			$table->frameOptions = DFDiagram::parseXMLAttrs("<{$f[1]}>");
+			$this->tables[] = $table;
 		}
 	}
-	public function render(){
+	public function render() {
 		// Render the rendered table, wrapped with render()
 		//return $this->format($this->table->render());
 		$text = '';
 		foreach ($this->tables as $table) {
-			$text .= '<div class="dfdiagram-frame">' . $table->render() . '</div>';
+			$text .= '<div class="dfdiagram-frame" ' . DFDiagram::XMLAttrsToDataAttrs($table->frameOptions)
+				. '>' . $table->render() . '</div>';
 		}
 		return $this->format($text);
 	}
