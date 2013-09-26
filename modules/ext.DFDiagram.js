@@ -68,7 +68,7 @@ jQuery(function($){
 			if ($(e).data('type') == 'level') {
 				levels[Number($(e).data('level'))] = i;
 				if (i == 0) {
-					currentLevel = originalLevel = i;
+					currentLevel = originalLevel = Number($(e).data('level'));
 				}
 			}
 			e.canvas.events.bind('keypress', changeLevel);
