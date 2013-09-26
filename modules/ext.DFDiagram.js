@@ -54,9 +54,7 @@ jQuery(function($){
 		 */
 		var levels = [], originalLevel, currentLevel;
 		var changeLevel = function(_, event) {
-			console.log(event);
 			if (event.keyCode == 60 || event.keyCode == 62) {
-				console.log('new level')
 				var newLevel = currentLevel - (event.keyCode - 61);
 				if (newLevel in levels) {
 					currentLevel = newLevel;
@@ -73,9 +71,6 @@ jQuery(function($){
 			}
 			e.canvas.events.bind('keypress', changeLevel);
 		});
-		window.levels = levels
-		
-		window.displayFrame = displayFrame;
 	}
 	return {
 		interactiveSetup: interactiveSetup,
