@@ -38,7 +38,6 @@ jQuery(function($){
 	});
 	function interactiveSetup(diagram) {
 		var frameList = diagram.data('frameList');
-		//frameList.css('float', 'left');
 		var activeFrame = 0;
 		function displayFrame(id) {
 			frameList.hide();
@@ -54,8 +53,8 @@ jQuery(function($){
 		 */
 		var levels = [], originalLevel, currentLevel;
 		var changeLevel = function(_, event) {
-			if (event.keyCode == 60 || event.keyCode == 62) {
-				var newLevel = currentLevel - (event.keyCode - 61);
+			if (event.which == 60 || event.which == 62) {
+				var newLevel = currentLevel - (event.which - 61);
 				if (newLevel in levels) {
 					currentLevel = newLevel;
 					displayFrame(levels[newLevel]);
