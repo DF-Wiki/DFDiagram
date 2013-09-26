@@ -283,8 +283,9 @@ class DFDiagram {
 	// A DFDTable
 	private $table;
 	public static function parseXMLAttrs($string) {
+		$string = $string . ' ';
 		$attrString = preg_replace('/<\w+\s*([^>]*)>/', "$1", $string);
-		$attrString = preg_replace('/(\w+?)=(\w+?)\s+/', "$1=\"$2\" ", $attrString);
+		$attrString = preg_replace('/(\w+?)=([^"\'\s]+)\s+/', "$1=\"$2\" ", $attrString);
 		$attrString = str_replace("'", '"', $attrString);
 		$attrs = array();
 		$current = "";
