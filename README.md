@@ -17,4 +17,4 @@ Navigate to `Special:Version` on your wiki to verify that the extension has been
 
 Usage
 -----
-See the [wiki](https://github.com/lethosor/DFDiagram/wiki) for more information (including diagram syntax and ).
+See the [wiki](https://github.com/lethosor/DFDiagram/wiki) for more information.
