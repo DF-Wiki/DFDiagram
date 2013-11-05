@@ -382,11 +382,26 @@ class DFDMWHooks {
 		$diagram = new DFDiagram($text, $args);
 		return $diagram->render();
 	}
-	static public function includeModules($outPage) {
+	static public function includeModules($outPage, $skin) {
 		/*
 		 * Include the resources in $wgResourceModules
 		 */
-		$outPage->addModules(array('ext.DFDiagram'));
+		$user = $skin->getContext()->getUser();
+
+		$outPage->addModules(array('ext.DFDiagram'));		
+		if($user->getOption('dfdiagram-use-canvas')) {
+			$outPage->addModules('ext.DFDiagram.canvas');
+		}
+		
+		return true;
+	}
+	static public function getPreferences($user, &$preferences) {
+		// Create preferences
+		$preferences['dfdiagram-use-canvas'] = array(
+			'type' => 'toggle',
+			'label-message' => 'dfdiagram-use-canvas',
+			'section' => 'dfdiagram/dfdiagram-canvas'
+		);
 		return true;
 	}
 }

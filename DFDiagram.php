@@ -13,6 +13,7 @@ if (!isset($wgDFDDefaultDiagramPath)) {
 }
 
 require_once 'Diagram.php';
+$wgExtensionMessagesFiles['DFDiagram'] = dirname( __FILE__ ) . '/DFDiagram.i18n.php';
 
 $DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
@@ -21,8 +22,14 @@ $DFDFile = new DFDBlockFile($wgDFDConfigFile);
  */
 
 $wgHooks['ParserFirstCallInit'][] = 'DFDMWHooks::init';
+
 $wgResourceModules['ext.DFDiagram'] = array(
 	'styles' => "modules/ext.DFDiagram.css",
+	'localBasePath' => __DIR__,
+	'remoteExtPath' => 'DFDiagram'
+);
+
+$wgResourceModules['ext.DFDiagram.canvas'] = array(
 	'scripts' => array(
 		'modules/df-tileset/df-tileset.js',
 		'modules/ext.DFDiagram.js',
@@ -32,6 +39,9 @@ $wgResourceModules['ext.DFDiagram'] = array(
 );
 
 $wgHooks['BeforePageDisplay'][] = 'DFDMWHooks::includeModules';
+
+$wgHooks['GetPreferences'][] = 'DFDMWHooks::getPreferences';
+$wgDefaultUserOptions['dfdiagram-use-canvas'] = true;
 
 /*
  * Credits for Special:Version
