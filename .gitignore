@@ -3,6 +3,7 @@
 
 # Tilesets
 *.png
+!/resources/*.png
 
 # Stuff
 /.ignore/*
