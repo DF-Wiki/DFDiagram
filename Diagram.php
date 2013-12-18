@@ -54,6 +54,7 @@ class DFDBlockFile {
 	private $text;
 	private $blocks;
 	function __construct($path) {
+		return;
 		$this->text = file_get_contents($path);
 		$matches = array();
 		preg_match_all('/<(tile|block) name=".*">[\s\S]*?<\/\1>/', $this->text, $matches);
@@ -406,4 +407,4 @@ class DFDMWHooks {
 	}
 }
 
-$DFDFile = new DFDBlockFile($wgDFDConfigFile);
+#$DFDFile = new DFDBlockFile($wgDFDConfigFile);
