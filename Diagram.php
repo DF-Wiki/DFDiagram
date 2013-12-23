@@ -326,6 +326,11 @@ class DFDiagram {
 	public function __construct($text, $opts) {
 		// Initialize the table with the provided text and options (no processing here)
 		//$this->table = new DFDTable($text, $opts);
+		if (!array_key_exists('display', $opts))
+			$opts['display'] = 'block';
+		$opts['display'] = preg_replace('/[^A-Za-z-]/', '', $opts['display']);
+		$this->opts = $opts;
+		
 		$this->tables = array();
 		$frames = array();
 		if (!preg_match_all('/\n*<(frame[^>]*)>([\s\S]*?)<\/frame>\n*/', $text, $frames, PREG_SET_ORDER)) {
@@ -351,8 +356,11 @@ class DFDiagram {
 	}
 
 	public function format($html) {
+		$style = "";
+		if ($this->opts['display'] != 'block')
+			$style .= "display: {$this->opts['display']};";
 		return <<< HTML
-<div class="dfdiagram">
+<div class="dfdiagram" style="$style">
 $html
 </div>
 HTML;
