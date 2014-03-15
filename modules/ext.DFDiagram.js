@@ -42,9 +42,10 @@ jQuery(function($){
 		function displayFrame(id) {
 			frameList.hide();
 			$(frameList[id]).show();
-			frameList[activeFrame].canvas.focus(0);
 			activeFrame = id;
-			frameList[activeFrame].canvas.focus(1);
+			// Make focus_mask the right size so it can be focused
+			frameList[activeFrame].canvas.update_size();
+			frameList[activeFrame].canvas.focus_mask.show().focus();
 		}
 		if (frameList.length <= 1) return;
 		frameList.find('canvas').css('box-shadow', '0px 0px 2px 2px #7f7').attr('title', 'Interactive diagram');
