@@ -12,16 +12,18 @@ if (!isset($wgDFDDefaultDiagramPath)) {
 	$wgDFDDefaultDiagramPath = "$IP/extensions/DFDiagram/default_diagram.txt";
 }
 
-require_once 'Diagram.php';
-$wgExtensionMessagesFiles['DFDiagram'] = dirname( __FILE__ ) . '/DFDiagram.i18n.php';
+$DFDIncludes = array('Diagram', 'Parser');
+foreach ($DFDIncludes as $f)
+	require_once("inc/$f.php");
 
-$DFDFile = new DFDBlockFile($wgDFDConfigFile);
+require_once 'DFDiagram.body.php';
+$wgExtensionMessagesFiles['DFDiagram'] = dirname( __FILE__ ) . '/DFDiagram.i18n.php';
 
 /*
  * Add hooks
  */
 
-$wgHooks['ParserFirstCallInit'][] = 'DFDMWHooks::init';
+$wgHooks['ParserFirstCallInit'][] = 'DFDHooks::init';
 
 $wgResourceModules['ext.DFDiagram'] = array(
 	'styles' => "modules/ext.DFDiagram.css",
@@ -38,9 +40,9 @@ $wgResourceModules['ext.DFDiagram.canvas'] = array(
 	'remoteExtPath' => 'DFDiagram'
 );
 
-$wgHooks['BeforePageDisplay'][] = 'DFDMWHooks::includeModules';
+$wgHooks['BeforePageDisplay'][] = 'DFDHooks::includeModules';
 
-$wgHooks['GetPreferences'][] = 'DFDMWHooks::getPreferences';
+$wgHooks['GetPreferences'][] = 'DFDHooks::getPreferences';
 $wgDefaultUserOptions['dfdiagram-use-canvas'] = true;
 
 /*
