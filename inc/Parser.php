@@ -19,22 +19,27 @@ class DFDParser {
         $cur_token = '';
         $depth = 0;
         $index = 0;
+        $escape = false;
         $length = mb_strlen($text);
         while ($index < $length) {
             $ch = mb_substr($text, $index, 1);
             $prev_ch = ($index > 0) ? mb_substr($text, $index - 1, 1) : '';
-            if ($ch == '\\' && $prev_ch != '\\') {
-                // escapes next character - pass
+            if ($ch == '\\' && !$escape) {
+                // escape next character
+                $escape = true;
+                $index++;
+                continue;
             }
-            elseif ($ch == '[' && $prev_ch != '\\') {
+            elseif ($ch == '[' && !$escape) {
                 $depth++;
             }
-            elseif ($ch == ']' && $prev_ch != '\\') {
+            elseif ($ch == ']' && !$escape) {
                 $depth--;
                 if ($depth < 0)
                     throw new DFDParserError('Unmatched closing bracket at ' .
                         self::formatIndex($text, $index));
             }
+            $escape = false;
             $cur_token .= $ch;
             if ($depth == 0) {
                 $tokens[] = $cur_token;
@@ -45,6 +50,9 @@ class DFDParser {
         if ($depth > 0)
             throw new DFDParserError('Unmatched opening bracket at ' .
                 self::formatIndex($text, $index - mb_strlen($cur_token)));
+        if ($escape)
+            throw new DFDParserError('Unfinished escape sequence at ' .
+                self::formatIndex($text, $index));
         return $tokens;
     }
     public function parse ($text, $args) {
