@@ -1,8 +1,19 @@
 <?php
 
-class DFDParserError extends Exception { }
+class DFDParserError extends Exception {
+    public function getHtmlMessage() {
+        return '<span class="error">Parser Error: ' . $this->getMessage() . '</span>';
+    }
+}
 
 class DFDParser {
+    static public function formatIndex ($text, $index) {
+        $slice = mb_substr($text, 0, $index + 1);
+        $line = substr_count($slice, "\n") + 1;
+        $col = $index - strrpos($slice, "\n");
+        $context = htmlentities(substr($text, $index - 4, 9));
+        return "line $line, col $col near \"$context\"";
+    }
     public function tokenize ($text) {
         $tokens = array();
         $cur_token = '';
@@ -21,7 +32,8 @@ class DFDParser {
             elseif ($ch == ']' && $prev_ch != '\\') {
                 $depth--;
                 if ($depth < 0)
-                    throw new DFDParserError('Unmatched closing bracket');
+                    throw new DFDParserError('Unmatched closing bracket at ' .
+                        self::formatIndex($text, $index));
             }
             $cur_token .= $ch;
             if ($depth == 0) {
@@ -31,7 +43,8 @@ class DFDParser {
             $index++;
         }
         if ($depth > 0)
-            throw new DFDParserError('Unmatched opening bracket');
+            throw new DFDParserError('Unmatched opening bracket at ' .
+                self::formatIndex($text, $index - mb_strlen($cur_token)));
         return $tokens;
     }
     public function parse ($text, $args) {
@@ -39,10 +52,10 @@ class DFDParser {
         try {
             $tokens = $this->tokenize($text);
             ob_start(); print_r($tokens); $ret = ob_get_contents(); ob_end_clean();
+            return "<pre>$ret</pre>";
         }
         catch (DFDParserError $e) {
-            $ret = "Parser error:\n" . $e->getMessage();
+            return $e->getHtmlMessage();
         }
-        return "<pre>$ret</pre>";
     }
 }
