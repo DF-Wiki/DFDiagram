@@ -60,6 +60,18 @@ class ParserTest extends PHPUnit_Framework_TestCase {
     function testUnfinishedEscape3() {
         $this->parser->tokenize('a\\');
     }
+    /**
+     * @expectedException DFDParserError
+     */
+    function testMismatchedOpeningBracket() {
+        $this->parser->tokenize('[');
+    }
+    /**
+     * @expectedException DFDParserError
+     */
+    function testMismatchedClosingBracket() {
+        $this->parser->tokenize(']');
+    }
 
     function testMultipleTokens() {
         $this->assertEquals(
@@ -77,6 +89,10 @@ class ParserTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(
             $this->parser->tokenize('[a][b]'),
             array('[a]', '[b]')
+        );
+        $this->assertEquals(
+            $this->parser->tokenize('[a]\\[b\\]'),
+            array('[a]', '[', 'b', ']')
         );
         $this->assertEquals(
             $this->parser->tokenize('[ab][cd]'),
