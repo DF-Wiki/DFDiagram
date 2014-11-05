@@ -1,0 +1,5 @@
+<testsuites>
+  <testsuite name="DFDiagram">
+    <directory>tests</directory>
+  </testsuite>
+</testsuites>
