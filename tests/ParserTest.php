@@ -6,6 +6,7 @@ class ParserTest extends PHPUnit_Framework_TestCase {
     function setUp() {
         $this->parser = new DFDParser();
     }
+
     function testTokenize() {
         $this->assertEquals(
             $this->parser->tokenize('a bc'),
@@ -16,6 +17,7 @@ class ParserTest extends PHPUnit_Framework_TestCase {
             array('[a]', 'b', '[cd]')
         );
     }
+
     function testTokenizeEscapes() {
         $this->assertEquals(
             $this->parser->tokenize('[ab\\]\\[cd]'),
@@ -42,6 +44,7 @@ class ParserTest extends PHPUnit_Framework_TestCase {
             array('[abc[d][]]ef[]', 'g', '[[\\]]]')
         );
     }
+
     function testTokenizeNesting() {
         $this->assertEquals(
             $this->parser->tokenize('[abc[d]ef[g]]'),
@@ -56,30 +59,35 @@ class ParserTest extends PHPUnit_Framework_TestCase {
             array('[[a][]]', ' ', '[[a][]]', ' ', '[[a][]]')
         );
     }
+
     /**
      * @expectedException DFDParserError
      */
     function testTokenizeUnfinishedEscape1() {
         $this->parser->tokenize('\\');
     }
+
     /**
      * @expectedException DFDParserError
      */
     function testTokenizeUnfinishedEscape2() {
         $this->parser->tokenize('\\\\\\');
     }
+
     /**
      * @expectedException DFDParserError
      */
     function testTokenizeUnfinishedEscape3() {
         $this->parser->tokenize('a\\');
     }
+
     /**
      * @expectedException DFDParserError
      */
     function testTokenizeMismatchedOpeningBracket() {
         $this->parser->tokenize('[');
     }
+
     /**
      * @expectedException DFDParserError
      */

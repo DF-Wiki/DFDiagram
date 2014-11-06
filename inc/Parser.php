@@ -14,6 +14,7 @@ class DFDParser {
         $context = htmlentities(substr($text, $index - 4, 9));
         return "line $line, col $col near \"$context\"";
     }
+
     public function tokenize ($text) {
         $tokens = array();
         $cur_token = '';
@@ -55,6 +56,7 @@ class DFDParser {
                 self::formatIndex($text, $index));
         return $tokens;
     }
+
     public function parse ($text, $args) {
         $text = preg_replace('/^\n+|\n+$/', '', $text);
         try {
