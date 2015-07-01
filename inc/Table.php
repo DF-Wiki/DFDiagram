@@ -32,7 +32,7 @@ class DFDTable {
     }
 
     public function setCursor($row, $col) {
-        $this->cursor = array($row, $col);
+        $this->cursor = array(max(0, $row), max(0, $col));
     }
 
     public function cursorNextCell() {

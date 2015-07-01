@@ -37,6 +37,12 @@ class TableTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals($table->getCursor(), array(1, 0));
     }
 
+    function testCursorBounds() {
+        $table = new DFDTable();
+        $table->setCursor(-1, -1);
+        $this->assertEquals($table->getCursor(), array(0, 0));
+    }
+
     function testCursorMovementWithExistingCells() {
         $table = new DFDTable();
         $table->insertAt(0, 1, 'a');
