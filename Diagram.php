@@ -30,22 +30,20 @@ function DFDParseTokens($string){
 			// mb_ functions sometimes end up with empty characters
 			continue;
 		}
-		if ($char == "[") {
+		if ($char == "[" && !$in_tag) {
 			// starts a tag
 			$in_tag = true;
 			$tag_start = $index;
 		}
-		elseif ($char == "]") {
+		elseif ($char == "]" && $in_tag) {
 			// closes a tag
 			$in_tag = false;
 			// Use the substring from $tag_start to the current character (INCLUSIVE) as the token
 			$tokens[] = mb_substr($string, $tag_start, $index - $tag_start + 1);
 		}
-		if ($in_tag || $char == ']') {
-			// Don't count tags as individual characters!
-			continue;
+		else if (!$in_tag) {
+			$tokens[] = $char;
 		}
-		$tokens[] = $char;
 	}
 	return $tokens;
 }
