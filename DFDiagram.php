@@ -5,17 +5,12 @@
  *
  * This is the file that should be included by LocalSettings.php
  */
-if (!isset($wgDFDConfigFile)) {
-	$wgDFDConfigFile = "$IP/extensions/DFDiagram/diagram_config.txt";
-}
 if (!isset($wgDFDDefaultDiagramPath)) {
 	$wgDFDDefaultDiagramPath = "$IP/extensions/DFDiagram/default_diagram.txt";
 }
 
 require_once 'Diagram.php';
 $wgExtensionMessagesFiles['DFDiagram'] = dirname( __FILE__ ) . '/DFDiagram.i18n.php';
-
-$DFDFile = new DFDBlockFile($wgDFDConfigFile);
 
 /*
  * Add hooks
