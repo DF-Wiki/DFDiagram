@@ -1,0 +1,11 @@
+{
+	"@metadata": {
+		"authors": [
+			"Lethosor"
+		]
+	},
+	"prefs-dfdiagram": "Diagrams",
+	"prefs-dfdiagram-canvas": "Canvas options",
+	"dfdiagram-use-canvas": "Enable canvas display (requires JavaScript)"
+}
+

@@ -324,7 +324,7 @@ class DFDMWHooks {
 	/**
 	 * Hooks for integrating DFDiagram extension functionality with MediaWiki
 	 */
-	static public function init($parser) {
+	static public function init(Parser $parser) {
 		// Register the <diagram> tag
 		$parser->setHook('diagram', 'DFDMWHooks::create');
 		return true;
@@ -342,7 +342,7 @@ class DFDMWHooks {
 		$diagram = new DFDiagram($text, $args);
 		return $diagram->render();
 	}
-	static public function includeModules($outPage, $skin) {
+	static public function includeModules(OutputPage $outPage, Skin $skin) {
 		/*
 		 * Include the resources in $wgResourceModules
 		 */
@@ -355,7 +355,7 @@ class DFDMWHooks {
 
 		return true;
 	}
-	static public function getPreferences($user, &$preferences) {
+	static public function getPreferences(User $user, array &$preferences) {
 		// Create preferences
 		$preferences['dfdiagram-use-canvas'] = array(
 			'type' => 'toggle',
