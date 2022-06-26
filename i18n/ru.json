@@ -6,7 +6,7 @@
 	},
 	"prefs-dfdiagram": "Диаграммы",
 	"prefs-dfdiagram-canvas": "Настройки холста",
-	"dfdiagram-use-canvas": "Включить отображение холста (requires JavaScript)"
+	"dfdiagram-use-canvas": "Включить отображение холста (требует поддержки JavaScript)"
 }
 
 

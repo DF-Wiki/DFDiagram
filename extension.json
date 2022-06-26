@@ -20,8 +20,9 @@
 		"DFDiagramMagic": "DFDiagram.magic.php"
 	},
 	"config": {
-    "$DFDDefaultDiagramPath": {
-			"value": "dirname(__FILE__) .'/default_diagram.txt'"
+		"DFDDefaultDiagramPath": {
+			"value": "default_diagram.txt",
+			"path": true
 		}
 	},
 	"DefaultUserOptions": {
@@ -29,7 +30,7 @@
 	},
 	"ResourceModules": {
 		"ext.DFDiagram": {
-			"localBasePath": "__DIR__",
+			"localBasePath": "",
 			"remoteExtPath": "DFDiagram",
 			"styles":  [
 				"modules/ext.DFDiagram.css"
@@ -37,7 +38,7 @@
 			"position": "top"
 		},
 		"ext.DFDiagram.canvas": {
-			"localBasePath": "__DIR__",
+			"localBasePath": "",
 			"remoteExtPath": "DFDiagram",
 			"scripts": [
 				"modules/df-tileset/df-tileset.js",
