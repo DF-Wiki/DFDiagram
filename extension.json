@@ -28,6 +28,11 @@
 	"DefaultUserOptions": {
 		"dfdiagram-use-canvas": true
 	},
+	"MessagesDirs": {
+		"DFDiagram": [
+			"i18n"
+		]
+	},
 	"ResourceModules": {
 		"ext.DFDiagram": {
 			"localBasePath": "",
