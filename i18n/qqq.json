@@ -1,0 +1,12 @@
+{
+	"@metadata": {
+		"authors": [
+			"Lethosor"
+		]
+	},
+	"prefs-dfdiagram": "DFDiagram preferences title",
+	"prefs-dfdiagram-canvas": "DFDiagram preferences canvas section title",
+	"dfdiagram-use-canvas": "Toggle canvas-based display of diagrams"
+}
+
+

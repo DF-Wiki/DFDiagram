@@ -1,0 +1,55 @@
+{
+	"name": "DFDiagram",
+	"version": "0.6.2",
+	"author": "Lethosor",
+	"url": "https://github.com/lethosor/DFDiagram",
+	"description": "Adds support for DF-style diagram",
+	"type": "parserhook",
+	"requires": {
+		"MediaWiki": ">= 1.33"
+	},
+	"Hooks": {
+		"ParserFirstCallInit": "DFDMWHooks::init",
+		"BeforePageDisplay": "DFDMWHooks::includeModules",
+		"GetPreferences": "DFDMWHooks::getPreferences"
+	},
+	"AutoloadClasses": {
+		"DFDMWHooks": "Diagram.php"
+	},
+	"ExtensionMessagesFiles": {
+		"DFDiagramMagic": "DFDiagram.magic.php"
+	},
+	"config": {
+		"DFDDefaultDiagramPath": {
+			"value": "default_diagram.txt",
+			"path": true
+		}
+	},
+	"DefaultUserOptions": {
+		"dfdiagram-use-canvas": true
+	},
+	"MessagesDirs": {
+		"DFDiagram": [
+			"i18n"
+		]
+	},
+	"ResourceModules": {
+		"ext.DFDiagram": {
+			"localBasePath": "",
+			"remoteExtPath": "DFDiagram",
+			"styles":  [
+				"modules/ext.DFDiagram.css"
+			],
+			"position": "top"
+		},
+		"ext.DFDiagram.canvas": {
+			"localBasePath": "",
+			"remoteExtPath": "DFDiagram",
+			"scripts": [
+				"modules/df-tileset/df-tileset.js",
+				"modules/ext.DFDiagram.js"
+			]
+		}
+	},
+	"manifest_version": 2
+}
